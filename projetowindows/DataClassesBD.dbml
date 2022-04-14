@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="OfinaDasPecas" Class="DataClassesBDDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=OfinaDasPecas.mssql.somee.com;Initial Catalog=OfinaDasPecas;Persist Security Info=True;User ID=MFadmin" SettingsObjectName="ProjetoWindows.Properties.Settings" SettingsPropertyName="OfinaDasPecasConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tab_combustivel" Member="tab_combustivels">
+    <Type Name="tab_combustivel">
+      <Column Name="id_combustibel" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="combustivel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_combustivel_tab_viatura" Member="tab_viaturas" ThisKey="id_combustibel" OtherKey="id_combustivel" Type="tab_viatura" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_encomenda" Member="tab_encomendas">
+    <Type Name="tab_encomenda">
+      <Column Name="id_encomenda" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id_cliente" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="data_encomenda" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="estado" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="id_estado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="tab_encomenda_tab_encomenda_detalhe" Member="tab_encomenda_detalhes" ThisKey="id_encomenda" OtherKey="id_encomenda" Type="tab_encomenda_detalhe" />
+      <Association Name="tab_estado_tab_encomenda" Member="tab_estado" ThisKey="id_estado" OtherKey="id_estado_reparacao" Type="tab_estado" IsForeignKey="true" />
+      <Association Name="tab_utilizador_tab_encomenda" Member="tab_utilizador" ThisKey="id_cliente" OtherKey="id_utilizador" Type="tab_utilizador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_encomenda_detalhe" Member="tab_encomenda_detalhes">
+    <Type Name="tab_encomenda_detalhe">
+      <Column Name="id_encomenda" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id_peca" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="quantidade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="valor_total_item" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Association Name="tab_encomenda_tab_encomenda_detalhe" Member="tab_encomenda" ThisKey="id_encomenda" OtherKey="id_encomenda" Type="tab_encomenda" IsForeignKey="true" />
+      <Association Name="tab_peca_tab_encomenda_detalhe" Member="tab_peca" ThisKey="id_peca" OtherKey="id_peca" Type="tab_peca" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_estado" Member="tab_estados">
+    <Type Name="tab_estado">
+      <Column Name="id_estado_reparacao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_estado_tab_encomenda" Member="tab_encomendas" ThisKey="id_estado_reparacao" OtherKey="id_estado" Type="tab_encomenda" />
+      <Association Name="tab_estado_tab_reparacao" Member="tab_reparacaos" ThisKey="id_estado_reparacao" OtherKey="id_estado_reparacao" Type="tab_reparacao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_oficina" Member="tab_oficinas">
+    <Type Name="tab_oficina">
+      <Column Name="id_oficina" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nome" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="morada" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="contacto" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="lotacao_maxima" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_peca" Member="tab_pecas">
+    <Type Name="tab_peca">
+      <Column Name="id_peca" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nome" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ref" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="valor" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="binarios" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="contenttype" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="id_tipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="id_marca_peca" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="data_fabrico" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="quantidade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descricao" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="tab_peca_tab_encomenda_detalhe" Member="tab_encomenda_detalhes" ThisKey="id_peca" OtherKey="id_peca" Type="tab_encomenda_detalhe" />
+      <Association Name="tab_peca_tab_reparacao_detalhe" Member="tab_reparacao_detalhes" ThisKey="id_peca" OtherKey="id_peca" Type="tab_reparacao_detalhe" />
+      <Association Name="tab_peca_marca_tab_peca" Member="tab_peca_marca" ThisKey="id_marca_peca" OtherKey="id_marca_peca" Type="tab_peca_marca" IsForeignKey="true" />
+      <Association Name="tab_peca_tipo_tab_peca" Member="tab_peca_tipo" ThisKey="id_tipo" OtherKey="id_tipo" Type="tab_peca_tipo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_peca_marca" Member="tab_peca_marcas">
+    <Type Name="tab_peca_marca">
+      <Column Name="id_marca_peca" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id_tipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="marca_peca" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_peca_marca_tab_peca" Member="tab_pecas" ThisKey="id_marca_peca" OtherKey="id_marca_peca" Type="tab_peca" />
+      <Association Name="tab_peca_tipo_tab_peca_marca" Member="tab_peca_tipo" ThisKey="id_tipo" OtherKey="id_tipo" Type="tab_peca_tipo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_peca_tipo" Member="tab_peca_tipos">
+    <Type Name="tab_peca_tipo">
+      <Column Name="id_tipo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tipo_peca" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_peca_tipo_tab_peca" Member="tab_pecas" ThisKey="id_tipo" OtherKey="id_tipo" Type="tab_peca" />
+      <Association Name="tab_peca_tipo_tab_peca_marca" Member="tab_peca_marcas" ThisKey="id_tipo" OtherKey="id_tipo" Type="tab_peca_marca" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_perfil" Member="tab_perfils">
+    <Type Name="tab_perfil">
+      <Column Name="id_perfil" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="perfil" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_perfil_tab_utilizador" Member="tab_utilizadors" ThisKey="id_perfil" OtherKey="id_perfil" Type="tab_utilizador" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_reparacao" Member="tab_reparacaos">
+    <Type Name="tab_reparacao">
+      <Column Name="id_reparacao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="matricula" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="id_funcionario" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="id_estado_reparacao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="data_inicio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="data_fim" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="descricao" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="hora_inicio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="id_tipo_reparacao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="valor_totalReparacao" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Association Name="tab_reparacao_tab_reparacao_detalhe" Member="tab_reparacao_detalhes" ThisKey="id_reparacao" OtherKey="id_reparacao" Type="tab_reparacao_detalhe" />
+      <Association Name="tab_estado_tab_reparacao" Member="tab_estado" ThisKey="id_estado_reparacao" OtherKey="id_estado_reparacao" Type="tab_estado" IsForeignKey="true" />
+      <Association Name="tab_utilizador_tab_reparacao" Member="tab_utilizador" ThisKey="id_funcionario" OtherKey="id_utilizador" Type="tab_utilizador" IsForeignKey="true" />
+      <Association Name="tab_viatura_tab_reparacao" Member="tab_viatura" ThisKey="matricula" OtherKey="matricula" Type="tab_viatura" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_reparacao_detalhe" Member="tab_reparacao_detalhes">
+    <Type Name="tab_reparacao_detalhe">
+      <Column Name="id_reparacao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="id_peca" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="quantidade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="valor_totalReparacaoDetalhe" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Association Name="tab_peca_tab_reparacao_detalhe" Member="tab_peca" ThisKey="id_peca" OtherKey="id_peca" Type="tab_peca" IsForeignKey="true" />
+      <Association Name="tab_reparacao_tab_reparacao_detalhe" Member="tab_reparacao" ThisKey="id_reparacao" OtherKey="id_reparacao" Type="tab_reparacao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_tipo_reparacao" Member="tab_tipo_reparacaos">
+    <Type Name="tab_tipo_reparacao">
+      <Column Name="id_tipo_reparacao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tipo_reparacao" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="valor" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="descricao" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="binarios" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_utilizador" Member="tab_utilizadors">
+    <Type Name="tab_utilizador">
+      <Column Name="id_utilizador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="utilizador" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="pw" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="id_perfil" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ativo" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="nome" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="apelido" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="nif" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="morada" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="telemovel" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="binarios" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="contenttype" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="genero" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="tab_utilizador_tab_encomenda" Member="tab_encomendas" ThisKey="id_utilizador" OtherKey="id_cliente" Type="tab_encomenda" />
+      <Association Name="tab_utilizador_tab_reparacao" Member="tab_reparacaos" ThisKey="id_utilizador" OtherKey="id_funcionario" Type="tab_reparacao" />
+      <Association Name="tab_utilizador_tab_viatura" Member="tab_viaturas" ThisKey="id_utilizador" OtherKey="id_utilizador" Type="tab_viatura" />
+      <Association Name="tab_perfil_tab_utilizador" Member="tab_perfil" ThisKey="id_perfil" OtherKey="id_perfil" Type="tab_perfil" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_viatura" Member="tab_viaturas">
+    <Type Name="tab_viatura">
+      <Column Name="matricula" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id_utilizador" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="id_modelo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ano" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="id_combustivel" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="info_adicional" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="tab_viatura_tab_reparacao" Member="tab_reparacaos" ThisKey="matricula" OtherKey="matricula" Type="tab_reparacao" />
+      <Association Name="tab_combustivel_tab_viatura" Member="tab_combustivel" ThisKey="id_combustivel" OtherKey="id_combustibel" Type="tab_combustivel" IsForeignKey="true" />
+      <Association Name="tab_utilizador_tab_viatura" Member="tab_utilizador" ThisKey="id_utilizador" OtherKey="id_utilizador" Type="tab_utilizador" IsForeignKey="true" />
+      <Association Name="tab_viatura_modelo_tab_viatura" Member="tab_viatura_modelo" ThisKey="id_modelo" OtherKey="id_modelo_viatura" Type="tab_viatura_modelo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_viatura_marca" Member="tab_viatura_marcas">
+    <Type Name="tab_viatura_marca">
+      <Column Name="id_marca_viatura" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="marca_viatura" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_viatura_marca_tab_viatura_modelo" Member="tab_viatura_modelos" ThisKey="id_marca_viatura" OtherKey="id_marca_viatura" Type="tab_viatura_modelo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tab_viatura_modelo" Member="tab_viatura_modelos">
+    <Type Name="tab_viatura_modelo">
+      <Column Name="id_modelo_viatura" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id_marca_viatura" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="modelo_viatura" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="tab_viatura_modelo_tab_viatura" Member="tab_viaturas" ThisKey="id_modelo_viatura" OtherKey="id_modelo" Type="tab_viatura" />
+      <Association Name="tab_viatura_marca_tab_viatura_modelo" Member="tab_viatura_marca" ThisKey="id_marca_viatura" OtherKey="id_marca_viatura" Type="tab_viatura_marca" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.teste_calendario" Member="teste_calendarios">
+    <Type Name="teste_calendario">
+      <Column Name="pkteste" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="teste_data" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="teste_time" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.testecalendario" Member="testecalendarios">
+    <Type Name="testecalendario">
+      <Column Name="testedata" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="testetime" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.testes" Member="testes">
+    <Type Name="teste">
+      <Column Name="quantidade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="preco" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
